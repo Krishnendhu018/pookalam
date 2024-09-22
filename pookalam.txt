@@ -1,0 +1,136 @@
+import turtle
+
+# Set up the screen
+screen = turtle.Screen()
+screen.bgcolor("white")
+screen.setup(width=800, height=800)
+
+# Create turtle object
+pookalam = turtle.Turtle()
+pookalam.speed(0)  # Fastest drawing speed
+pookalam.hideturtle()
+pookalam.penup()
+
+# Function to draw a filled circle centered at (0,0)
+def draw_filled_circle(t, radius, color):
+    """
+    Draws a filled circle centered at the origin.
+
+    Parameters:
+    - t: Turtle object
+    - radius: Radius of the circle
+    - color: Fill color of the circle
+    """
+    t.penup()
+    t.goto(0, -radius)  # Move to the starting position
+    t.setheading(0)
+    t.pendown()
+    t.fillcolor(color)
+    t.begin_fill()
+    t.circle(radius)
+    t.end_fill()
+    t.penup()
+    t.goto(0,0)  # Return to center
+
+# Function to draw sectors with alternating colors and green lines
+def draw_sectors(radius, sectors, colors, line_color):
+    angle = 360 / sectors
+    for i in range(sectors):
+        pookalam.fillcolor(colors[i % len(colors)])
+        pookalam.begin_fill()
+        pookalam.setheading(i * angle)
+        pookalam.forward(radius)
+        pookalam.pendown()
+        pookalam.left(90)
+        pookalam.circle(radius, angle)
+        pookalam.left(90)
+        pookalam.forward(radius)
+        pookalam.end_fill()
+        pookalam.penup()
+        
+        # Draw sector lines
+        pookalam.pencolor(line_color)
+        pookalam.setheading(i * angle)
+        pookalam.forward(radius)
+        pookalam.pendown()
+        pookalam.forward(0)  # Just to ensure the line is drawn
+        pookalam.penup()
+        pookalam.backward(radius)
+        pookalam.pencolor("black")  # Reset to default color
+
+
+# Function to draw a single petal
+def draw_petal(t, size, color):
+    """
+    Draws a single petal.
+
+    Parameters:
+    - t: Turtle object
+    - size: Size of the petal (controls the curvature)
+    - color: Fill color of the petal
+    """
+    t.fillcolor(color)
+    t.begin_fill()
+    t.circle(size, 60)  # Draw first arc
+    t.left(120)
+    t.circle(size, 60)  # Draw second arc
+    t.left(120)
+    t.end_fill()
+
+# Function to draw multiple petals evenly spaced around the center
+def draw_petals(t, num_petals, size, color, angle_offset=0):
+    """
+    Draws multiple petals evenly spaced around the center.
+
+    Parameters:
+    - t: Turtle object
+    - num_petals: Number of petals to draw
+    - size: Size of each petal
+    - color: Fill color of the petals
+    - angle_offset: Rotation offset in degrees
+    """
+    angle = 360 / num_petals
+    for i in range(num_petals):
+        t.setheading(i * angle + angle_offset)
+        t.penup()
+        t.goto(0,0)
+        t.forward(size)
+        t.setheading(i * angle + angle_offset)
+        t.pendown()
+        draw_petal(t, size, color)
+        t.penup()
+        t.goto(0,0)
+
+# Drawing the Pookalam Layers
+
+# Step 1: Draw the outer green circle with radius 100
+draw_filled_circle(pookalam, 150, "green")
+
+# Step 2: Draw the circle with 14 sectors alternately filled with orange and yellow, sector lines green
+draw_sectors(145, 18, ["orange", "yellow"], "green")
+
+# Step 3: Draw 8 pink petals around the center
+draw_petals(pookalam, 8, 80, "pink")
+
+# Step 4: Draw a white circle of radius 80 overlapping the petals
+draw_filled_circle(pookalam, 80, "white")
+
+# Step 5: Draw a blue circle of radius 88 at the center (adjust color as needed)
+draw_filled_circle(pookalam, 88, "orange")  # You can change "blue" to your desired color
+
+# Step 6: Draw 6 orange petals in the middle
+draw_petals(pookalam, 6, 40, "yellow")
+
+# Step 7: Draw 6 yellow petals overlapping the orange petals, rotated by 30 degrees
+draw_petals(pookalam, 6, 40, "red", angle_offset=30)
+
+# Step 8: Draw a white circle of radius 50 at the center
+draw_filled_circle(pookalam, 50, "white")
+
+# Step 9: Draw a violet circle of radius 30 at the center
+draw_filled_circle(pookalam, 30, "violet")
+
+
+
+
+
